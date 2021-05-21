@@ -1,0 +1,41 @@
+version: "3.9"
+   
+services:
+
+  db:
+    build: rex
+    restart: always
+    volumes:
+      - /data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=example
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+      - POSTGRES_USER_FILE=/run/secrets/db-user
+
+  sheldon:
+    build: powell
+    restart: always
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - /data/sheldon:/opt/sheldon
+    secrets:
+      - db-password
+    depends_on:
+      - db
+
+  bickle:
+    build: bickle
+    ports:
+       - 443:443
+    restart: always
+    depends_on: 
+      - sheldon
+
+volumes:
+  /data/db:
+  /data/sheldon
+secrets:
+  db-password:
+    file: db/password.txt
+
+    
