@@ -8,6 +8,6 @@ Docker-compose files used to play.
 ## Categories
 
 <ul>
-<li>Compose Name = Cities name</li>
+<li>Compose Name = depends</li>
 </ul>
 
